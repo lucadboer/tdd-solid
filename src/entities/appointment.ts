@@ -1,7 +1,7 @@
 export interface AppointmentProps {
   customer: string
-  startsAt: number
-  endsAt: number
+  startsAt: Date
+  endsAt: Date
 }
 
 export class Appointment {
@@ -20,8 +20,14 @@ export class Appointment {
   }
 
   constructor(props: AppointmentProps) {
-    if (props.endsAt <= props.startsAt) {
-      throw new Error('end time minor than start time')
+    const { startsAt, endsAt } = props
+
+    if (endsAt <= startsAt) {
+      throw new Error('Invalid end date, end time is minor than start time')
+    }
+
+    if (startsAt <= new Date()) {
+      throw new Error("Invalid start date, it's in the past")
     }
 
     this.props = props
